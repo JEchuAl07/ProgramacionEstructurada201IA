@@ -40,6 +40,7 @@ def ejemplo_do_while():
 
         if intentos_usuario == secreto:
             print("¡Acceso concedido!")
+            break
         else:
             print("Contraseña incorrecta. Intenta de nuevo.")
             break
