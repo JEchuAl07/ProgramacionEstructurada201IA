@@ -12,13 +12,13 @@ def clasificar_pixeles(intensidad):
         return print("Valor inválido. La intensidad debe estar entre 0 y 1.")
     
     if 0 <= intensidad < UMBRAL_BAJO:
-        return print("Clasificacion (Fondo oscuro)")
+        return "Clasificacion Fondo oscuro"
     
     if UMBRAL_BAJO <= intensidad < UMBRAL_ALTO:
-        return print("Clasificacion (Fondo gris)")
+        return "Clasificacion Fondo gris"
     
     if intensidad >= UMBRAL_ALTO:
-        return print("Clasificacion (Objeto brillante)")
+        return "Clasificacion Objeto brillante"
 
     print("Analisis de imagen finalizado.")
 
@@ -49,11 +49,11 @@ def cargar_y_procesar(nombre_archivo):
                     ruido_detectado += 1
                 else:
                     datos_limpios.append(valor_crudo)
-                    if clasificacion == "Clasificacion (Fondo oscuro)":
+                    if clasificacion == "Clasificacion Fondo oscuro":
                         fondo_oscuro += 1
-                    elif clasificacion == "Clasificacion (Fondo gris)":
+                    elif clasificacion == "Clasificacion Fondo gris":
                         fondo_gris += 1
-                    elif clasificacion == "Clasificacion (Objeto brillante)":
+                    elif clasificacion == "Clasificacion Objeto brillante":
                         objeto_brillante += 1
         print("Resultados de clasificacion:")
         print(f"Ruido detectado: {ruido_detectado}")
