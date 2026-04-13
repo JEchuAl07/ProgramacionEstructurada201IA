@@ -22,6 +22,22 @@ def clasificar_pixeles(intensidad):
 
     print("Analisis de imagen finalizado.")
 
+def valor_no_valido(intensidad):
+    if intensidad < 0 or intensidad > 1:
+        return print("Valor inválido. La intensidad debe estar entre 0 y 1.")
+
+def fondo_oscuro(intensidad):
+    if 0 <= intensidad < UMBRAL_BAJO:
+        return "Clasificacion Fondo oscuro"
+
+def fondo_gris(intensidad):
+    if UMBRAL_BAJO <= intensidad < UMBRAL_ALTO:
+        return "Clasificacion Fondo gris"
+    
+def objeto_brillante(intensidad):
+    if intensidad >= UMBRAL_ALTO:
+        return "Clasificacion Objeto brillante"
+
 import os
 
 def cargar_y_procesar(nombre_archivo):
