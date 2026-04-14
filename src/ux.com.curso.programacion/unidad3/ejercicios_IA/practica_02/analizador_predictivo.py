@@ -53,6 +53,19 @@ def generar_reporte(total_datos, validos, estadisticas):
 FUNCIÓN 4: Imprime un resumen formateado de los resultados.
 """
 # IMPLEMENTAR AQUÍ
+    valor_maximo, valor_minimo, promedio = estadisticas
+    descartados = total_datos - validos
+    print("*" * 30)
+    print("----- REPORTE DE LECTURAS DE SENSORES -----")
+    print("*" * 30)
+    print(f"Total de lecturas: {total_datos}")
+    print(f"Lecturas válidas: {validos}")
+    print(f"Lecturas descartadas: {descartados}")
+    print(f"Valor máximo: {valor_maximo:.2f}")
+    print(f"Valor mínimo: {valor_minimo:.2f}")
+    print(f"Valor promedio: {promedio:.2f}")
+    print("*" * 30)
+
  
 # --- LÓGICA PRINCIPAL (NO MODIFICAR ESTA PARTE) ---
 def ejecutar_pipeline():
