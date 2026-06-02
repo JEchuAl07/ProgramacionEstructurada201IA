@@ -7,33 +7,28 @@ import math  # El novato solo importó math esta vez
 
 # =====================================================================
 # RETO 1: Inicializador de Tablero de Juego (Matrices)
-# Sentido: Crear una cuadrícula vacía de 4x4 (como el juego 2048 o un tablero)
-#          inicializada con ceros antes de colocar las piezas de la IA.
-# Problema: Uso erróneo y peligroso de multiplicación de referencias,
-#           o bucles anidados manuales sumamente redundantes.
 # =====================================================================
 def inicializar_tablero_vacio():
-    # El novato descubrió que puede "multiplicar" listas, pero no sabe
-    # el peligro de que todas las filas apunten a la misma dirección de memoria.
     fila_base = [0, 0, 0, 0]
     tablero = [fila_base, fila_base, fila_base, fila_base]
     
-    # El novato intenta asegurarse de que funcione usando un ciclo manual 
-    # para "limpiar" cada celda por si acaso, lo cual es redundante
     for i in range(4):
         for j in range(4):
             tablero[i][j] = 0
             
     return tablero
 
+def inicializar_tablero_vacio_refactorizada():
+    # CAMBIO: Se eliminan las copias de referencias cruzadas y los bucles de limpieza redundantes.
+    # POR QUÉ: La comprensión de listas crea arrays bidimensionales con referencias únicas e 
+    # independientes en memoria, evitando que mutar una celda altere a las demás filas.
+    return [[0] * 4 for _ in range(4)]
+
+
 # =====================================================================
 # RETO 2: Recortador de Valores Atípicos (Clamping de Datos)
-# Sentido: Limitar las señales de los sensores del robot a un rango seguro.
-#          Si la señal baja de un mínimo o pasa de un máximo, se "recorta".
-# Problema: Lógica condicional repetitiva y tosca que ignora funciones nativas.
 # =====================================================================
 def limitar_senal_sensor(valor_lectura, minimo, maximo):
-    # Árbol de decisiones manual y enredado para simular un tope
     if valor_lectura < minimo:
         resultado = minimo
     else:
@@ -44,20 +39,22 @@ def limitar_senal_sensor(valor_lectura, minimo, maximo):
             
     return resultado
 
+def limitar_senal_sensor_refactorizada(valor_lectura, minimo, maximo):
+    # CAMBIO: Se remueve la estructura anidada de "if-else".
+    # POR QUÉ: Las funciones nativas de Python 'max' y 'min' resuelven matemáticamente 
+    # el límite inferior y superior en una sola línea limpia y legible (Clamping).
+    return max(minimo, min(valor_lectura, maximo))
+
+
 # =====================================================================
 # RETO 3: Buscador del Valor Más Cercano a Cero (Error Mínimo)
-# Sentido: Encontrar el menor error absoluto (loss) en una lista de pruebas.
-# Problema: Inicialización incorrecta o manual de infinitos y cálculo 
-#           tosco del valor absoluto usando multiplicaciones por -1.
 # =====================================================================
 def buscar_error_minimo(lista_errores):
-    # El novato inicializa el menor error con un número "grande" inventado
     menor_error = 999999.99 
     
     for i in range(len(lista_errores)):
         valor_actual = lista_errores[i]
         
-        # Intento manual de obtener el valor absoluto (fabs)
         if valor_actual < 0:
             absoluto = valor_actual * -1
         else:
@@ -68,16 +65,21 @@ def buscar_error_minimo(lista_errores):
             
     return menor_error
 
+def buscar_error_minimo_refactorizada(lista_errores):
+    if not lista_errores:
+        return 0.0
+    # CAMBIO: Se elimina el valor "999999.99" inventado, la multiplicación por -1 y el bucle for indexado.
+    # POR QUÉ: Usamos 'math.inf' para asegurar una inicialización al infinito real. Evaluamos 
+    # el valor absoluto nativo 'abs()' sobre una expresión generadora procesada directamente por 'min()'.
+    return min(abs(error) for error in lista_errores)
+
+
 # =====================================================================
 # RETO 4: Filtro de Valores Únicos (Eliminador de Duplicados)
-# Sentido: Limpiar las IDs de los usuarios del servidor de Discord para
-#          que no se procesen comandos repetidos en el mismo ciclo.
-# Problema: Algoritmo de búsqueda lineal doblemente anidado sumamente lento.
 # =====================================================================
 def depurar_usuarios_repetidos(lista_ids):
     lista_limpia = []
     
-    # Recorrido manual buscando si el elemento ya existe antes de agregarlo
     for i in range(len(lista_ids)):
         id_actual = lista_ids[i]
         ya_existe = False
@@ -92,20 +94,34 @@ def depurar_usuarios_repetidos(lista_ids):
             
     return lista_limpia
 
+def depurar_usuarios_repetidos_refactorizada(lista_ids):
+    # CAMBIO: Se descarta por completo el doble ciclo for indexado de búsqueda lineal.
+    # POR QUÉ: Convertir una lista a un conjunto ('set') elimina duplicados de forma nativa a 
+    # nivel de C mediante tablas Hash en complejidad O(n), manteniendo el tipo de retorno con 'list()'.
+    return list(set(lista_ids))
 
-# === PROGRAMA PRINCIPAL (Punto de entrada para probar) ===
+
+# === PROGRAMA PRINCIPAL ===
 if __name__ == "__main__":
     print("--- Probando Código Inicial (Parte III) ---")
-    
     tablero_ia = inicializar_tablero_vacio()
     print("Tablero inicializado de 4x4:")
     for fila in tablero_ia:
         print(fila)
         
     print("Lectura recortada (125.4 en rango 0-100):", limitar_senal_sensor(125.4, 0.0, 100.0))
-    
     errores_entrenamiento = [0.45, -0.12, 0.89, -0.03, 0.22]
     print("El error más cercano a cero es:", buscar_error_minimo(errores_entrenamiento))
-    
     ids_discord = [4521, 8892, 4521, 1022, 8892, 9931]
     print("Lista de IDs únicas filtradas:", depurar_usuarios_repetidos(ids_discord))
+
+    print("PROBANDO VERSIONES REFACTORIZADAS")
+    
+    tablero_ia_refactorizado = inicializar_tablero_vacio_refactorizada()
+    print("Tablero 4x4 (Refactorizado):")
+    for fila in tablero_ia_refactorizado:
+        print(fila)
+        
+    print("Lectura recortada (Refactorizado):", limitar_senal_sensor_refactorizada(125.4, 0.0, 100.0))
+    print("Error mínimo (Refactorizado):", buscar_error_minimo_refactorizada(errores_entrenamiento))
+    print("Lista de IDs únicas (Refactorizada):", depurar_usuarios_repetidos_refactorizada(ids_discord))
