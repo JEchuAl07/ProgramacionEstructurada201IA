@@ -105,4 +105,5 @@ if __name__ == "__main__":
     print("Distancia refactorizada:", calcular_distancia_refactorizar(0, 0, 3, 4))
     print("Distancia refactorizada 2:", calcular_distancia_refactorizar_2(0, 0, 3, 4))
     print("Respuesta bot:", obtener_saludo_agente())
+    print("Respuesta bot refactorizada:", obtener_saludo_agente_refactorizado())
     print("Estado del log:", evaluar_error_sistema(0.85))
